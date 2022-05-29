@@ -10,60 +10,71 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using WebDriverManager.DriverConfigs.Impl;
+using NetwealthNunit.utilities;
+
 
 namespace NetwealthNunit.utilities
 {
-   public class Base
+    public class Base
     {
 
-        public IWebDriver driver;
+        // public IWebDriver driver;
+
+        public ThreadLocal<IWebDriver> driver = new ThreadLocal<IWebDriver>();
+
         [SetUp]
         public void StartBrowser()
         {
             //configuration
             String browserName = ConfigurationManager.AppSettings["browser"];
             InitBrowser(browserName);
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.Manage().Window.Maximize();
-            driver.Url = "https://dev.id.netwealth.com/account/register?returnUrl=https://dev.netwealth.com/login";
+            driver.Value.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Value.Manage().Window.Maximize();
+            driver.Value.Url = "https://dev.id.netwealth.com/account/register?returnUrl=https://dev.netwealth.com/login";
 
         }
 
         public IWebDriver getDriver()
         {
-            return driver;
+            return driver.Value;
         }
 
         public void InitBrowser(string browserName)
         {
-            switch(browserName)
+            switch (browserName)
             {
                 case "Firefox":
 
                     new WebDriverManager.DriverManager().SetUpDriver(new FirefoxConfig());
-                    driver = new FirefoxDriver();
+                    driver.Value = new FirefoxDriver();
                     break;
 
                 case "Chrome":
 
                     new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
-                    driver = new ChromeDriver();
+                    driver.Value = new ChromeDriver();
                     break;
 
                 case "Edge":
 
                     new WebDriverManager.DriverManager().SetUpDriver(new EdgeConfig());
-                    driver = new EdgeDriver();
+                    driver.Value = new EdgeDriver();
                     break;
 
 
             }
         }
+
+        public static JsonReader getDataParser()
+        {
+            return new JsonReader();
+        }
+
         [TearDown]
 
         public void AfterTest()
         {
-            driver.Quit();
+            driver.Value.Quit();
         }
     }
 }

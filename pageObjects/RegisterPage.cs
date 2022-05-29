@@ -12,6 +12,7 @@ namespace NetwealthNunit.pageObjects
 {
     public class RegisterPage
     {
+        public string email1;
         //public String email1;
         private IWebDriver driver;
         public RegisterPage(IWebDriver driver)
@@ -48,6 +49,20 @@ namespace NetwealthNunit.pageObjects
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'Thank you')]")]
         private IWebElement registerverification;
 
+        [FindsBy(How = How.Id, Using = "Email-error")]
+        private IWebElement emailError;
+
+        [FindsBy(How = How.Id, Using = "FirstName-error")]
+        private IWebElement fnameError;
+
+        [FindsBy(How = How.Id, Using = "LastName-error")]
+        private IWebElement lnameError;
+
+        [FindsBy(How = How.Id, Using = "Password-error")]
+        private IWebElement passwordError;
+
+        [FindsBy(How = How.Id, Using = "ReferralSource-error")]
+        private IWebElement heraAboutError;
 
 
         //to access webelement
@@ -103,6 +118,58 @@ namespace NetwealthNunit.pageObjects
             return registerverification.Text; 
         }
 
+        public string emailValidationError()
+        {
+            return emailError.Text;
+
+        }
+
+        public string fnameValidationError()
+        {
+            return fnameError.Text;
+
+        }
+
+        public string lnameValidationError()
+        {
+            return lnameError.Text;
+
+        }
+
+        public string passwordValidationError()
+        {
+            return passwordError.Text;
+
+        }
+
+        public string hearAboutValidationError()
+        {
+            return heraAboutError.Text;
+
+        }
+
+        public string verifyPageTitle()
+        {
+           return driver.Title;
+        }
+
+        // Param:  
+        // Method to call Gmail API to get access code
+        // return 
+        //public string CallGmailAPI(string fromMail)
+        //{
+        //    try
+        //    { 
+        //   new WebDriverWait(driver, TimeSpan.FromSeconds(20)).Until(ExpectedConditions.ElementExists(By.Id("ematgil_info")));
+
+        //    }
+        //    catch
+        //    {
+        //        Console.WriteLine("I am in test page");
+        //    }
+        //    Console.WriteLine("I am in test page");
+        //    return GoogleAPI.GetNewUnreadEmail(fromMail).Result;
+        //}
 
     }
 }
